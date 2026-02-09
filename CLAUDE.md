@@ -133,7 +133,7 @@ python manage.py collectstatic
 - **Idioma del código:** Inglés (nombres de clases, variables, funciones)
 - **Idioma del contenido:** Español
 - **Templates:** Usar herencia de base.html
-- **Estilos:** Planificar integración con Bootstrap
+- **Estilos:** Tailwind CSS (via CDN)
 - **Migraciones:** Crear migraciones descriptivas
 
 ## Consideraciones de Wagtail
@@ -154,10 +154,10 @@ Correr tests: `python manage.py test`
 1. [x] Crear modelo BlogPage con campos básicos
 2. [x] Crear modelo BlogIndexPage para listar posts
 3. [x] Implementar categorías (Viajes, Tecnología, Trenes)
-4. [ ] Diseñar templates con Tailwind CSS
-5. [ ] Integrar embeds de YouTube
+4. [x] Diseñar templates con Tailwind CSS
+5. [x] Integrar embeds de YouTube (StreamField con EmbedBlock)
 6. [ ] Crear formulario de contacto
-7. [ ] Implementar sidebar de publicidad
-8. [ ] Agregar footer con redes sociales
+7. [x] Implementar sidebar de publicidad (placeholder)
+8. [x] Agregar footer con redes sociales
 9. [ ] Configurar búsqueda para indexar posts
 10. [ ] Optimizar para SEO

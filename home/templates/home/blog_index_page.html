@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block content %}
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <!-- Main Content -->
+    <div class="lg:col-span-2">
+        <header class="mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-900">{{ page.title }}</h1>
+
+            {% if page.intro %}
+                <div class="mt-4 text-lg text-gray-600">
+                    {{ page.intro|richtext }}
+                </div>
+            {% endif %}
+        </header>
+
+        <!-- Filtros por categoria -->
+        <nav class="mb-8 flex flex-wrap gap-2">
+            <a href="{{ page.url }}"
+               class="px-4 py-2 rounded-full text-sm font-medium transition-colors
+                      {% if not request.GET.category and not request.GET.tag %}
+                          bg-primary text-white
+                      {% else %}
+                          bg-gray-200 text-gray-700 hover:bg-gray-300
+                      {% endif %}">
+                Todos
+            </a>
+            {% for cat in categories %}
+                <a href="{{ page.url }}?category={{ cat.slug }}"
+                   class="px-4 py-2 rounded-full text-sm font-medium transition-colors
+                          {% if request.GET.category == cat.slug %}
+                              text-white
+                          {% else %}
+                              hover:opacity-80
+                          {% endif %}"
+                   style="{% if request.GET.category == cat.slug %}background-color: {{ cat.color }}{% else %}background-color: {{ cat.color }}20; color: {{ cat.color }}{% endif %}">
+                    {{ cat.name }}
+                </a>
+            {% endfor %}
+        </nav>
+
+        <!-- Tag activo -->
+        {% if request.GET.tag %}
+            <div class="mb-6 flex items-center gap-2">
+                <span class="text-gray-600">Filtrando por tag:</span>
+                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm bg-gray-800 text-white">
+                    {{ request.GET.tag }}
+                    <a href="{{ page.url }}" class="ml-2 hover:text-gray-300">&times;</a>
+                </span>
+            </div>
+        {% endif %}
+
+        <!-- Lista de posts -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {% for post in posts %}
+                {% include "components/post_card.html" with post=post %}
+            {% empty %}
+                <div class="col-span-full text-center py-12">
+                    <svg class="w-16 h-16 mx-auto text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                    <p class="text-gray-500 text-lg">No hay posts publicados todavia.</p>
+                    <p class="text-gray-400 mt-2">Vuelve pronto para ver nuevo contenido.</p>
+                </div>
+            {% endfor %}
+        </div>
+
+        <!-- Paginacion -->
+        {% include "components/pagination.html" %}
+    </div>
+
+    <!-- Sidebar -->
+    {% include "components/sidebar.html" %}
+</div>
+{% endblock %}

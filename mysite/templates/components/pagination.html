@@ -1,0 +1,29 @@
+{% if posts.has_other_pages %}
+<nav class="mt-8 flex justify-center items-center gap-4" aria-label="Paginacion">
+    {% if posts.has_previous %}
+        <a href="?{% if request.GET.category %}category={{ request.GET.category }}&{% endif %}{% if request.GET.tag %}tag={{ request.GET.tag }}&{% endif %}page={{ posts.previous_page_number }}"
+           class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors text-gray-700">
+            &larr; Anterior
+        </a>
+    {% else %}
+        <span class="px-4 py-2 border border-gray-200 rounded-lg text-gray-400 cursor-not-allowed">
+            &larr; Anterior
+        </span>
+    {% endif %}
+
+    <span class="px-4 py-2 text-gray-600">
+        Pagina {{ posts.number }} de {{ posts.paginator.num_pages }}
+    </span>
+
+    {% if posts.has_next %}
+        <a href="?{% if request.GET.category %}category={{ request.GET.category }}&{% endif %}{% if request.GET.tag %}tag={{ request.GET.tag }}&{% endif %}page={{ posts.next_page_number }}"
+           class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors text-gray-700">
+            Siguiente &rarr;
+        </a>
+    {% else %}
+        <span class="px-4 py-2 border border-gray-200 rounded-lg text-gray-400 cursor-not-allowed">
+            Siguiente &rarr;
+        </span>
+    {% endif %}
+</nav>
+{% endif %}

@@ -1,0 +1,74 @@
+{% load wagtailcore_tags %}
+
+<header class="bg-white shadow-sm sticky top-0 z-50">
+    <nav class="container mx-auto px-4">
+        <div class="flex items-center justify-between h-16">
+            <!-- Logo -->
+            <a href="/" class="flex items-center space-x-2">
+                <span class="text-xl font-bold text-gray-900 hover:text-primary transition-colors">
+                    Juancito escribe boludeces
+                </span>
+            </a>
+
+            <!-- Desktop Navigation -->
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="/" class="text-gray-600 hover:text-primary transition-colors">
+                    Home
+                </a>
+                <a href="/blog/?category=viajes" class="text-gray-600 hover:text-primary transition-colors">
+                    Viajes
+                </a>
+                <a href="/blog/?category=tecnologia" class="text-gray-600 hover:text-primary transition-colors">
+                    Tecnologia
+                </a>
+                <a href="/blog/?category=trenes" class="text-gray-600 hover:text-primary transition-colors">
+                    Trenes
+                </a>
+                <a href="/search/" class="text-gray-600 hover:text-primary transition-colors" title="Buscar">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                    </svg>
+                </a>
+                <a href="/contacto/" class="text-gray-600 hover:text-primary transition-colors">
+                    Contacto
+                </a>
+            </div>
+
+            <!-- Mobile menu button -->
+            <button type="button"
+                    class="md:hidden p-2 rounded-md text-gray-600 hover:text-primary hover:bg-gray-100"
+                    onclick="document.getElementById('mobile-menu').classList.toggle('hidden')"
+                    aria-label="Menu">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Mobile Navigation -->
+        <div id="mobile-menu" class="hidden md:hidden pb-4">
+            <div class="flex flex-col space-y-3">
+                <a href="/" class="text-gray-600 hover:text-primary transition-colors py-2">
+                    Home
+                </a>
+                <a href="/blog/?category=viajes" class="text-gray-600 hover:text-primary transition-colors py-2">
+                    Viajes
+                </a>
+                <a href="/blog/?category=tecnologia" class="text-gray-600 hover:text-primary transition-colors py-2">
+                    Tecnologia
+                </a>
+                <a href="/blog/?category=trenes" class="text-gray-600 hover:text-primary transition-colors py-2">
+                    Trenes
+                </a>
+                <a href="/search/" class="text-gray-600 hover:text-primary transition-colors py-2">
+                    Buscar
+                </a>
+                <a href="/contacto/" class="text-gray-600 hover:text-primary transition-colors py-2">
+                    Contacto
+                </a>
+            </div>
+        </div>
+    </nav>
+</header>
