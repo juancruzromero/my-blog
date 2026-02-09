@@ -67,9 +67,31 @@ python manage.py collectstatic
 
 ## Modelo de Datos Actual
 
+### BlogCategory (Snippet)
+- `name`: Nombre de la categoría
+- `slug`: URL slug único
+- `description`: Descripción
+- `color`: Color hex para badges
+
+**Categorías creadas:** Viajes, Tecnología, Hablemos de Trenes, Otros
+
 ### HomePage (home/models.py)
-- Modelo básico que hereda de `wagtail.models.Page`
-- Sin campos personalizados definidos aún
+- `body`: RichTextField
+
+### BlogIndexPage
+- `intro`: RichTextField para introducción
+- Lista posts con paginación (10 por página)
+- Filtros por categoría y tag
+
+### BlogPage
+- `subtitle`: Subtítulo opcional
+- `date`: Fecha de publicación
+- `featured_image`: Imagen destacada
+- `excerpt`: Resumen (máx. 500 chars)
+- `reading_time`: Tiempo de lectura en minutos
+- `category`: ForeignKey a BlogCategory
+- `tags`: Tags con ClusterTaggableManager
+- `body`: StreamField con heading, paragraph, image, quote, code, video
 
 ## Estructura Deseada del Blog
 
@@ -129,9 +151,9 @@ Correr tests: `python manage.py test`
 
 ## Próximos Pasos Sugeridos
 
-1. [ ] Crear modelo BlogPage con campos básicos
-2. [ ] Crear modelo BlogIndexPage para listar posts
-3. [ ] Implementar categorías (Viajes, Tecnología, Trenes)
+1. [x] Crear modelo BlogPage con campos básicos
+2. [x] Crear modelo BlogIndexPage para listar posts
+3. [x] Implementar categorías (Viajes, Tecnología, Trenes)
 4. [ ] Diseñar templates con Tailwind CSS
 5. [ ] Integrar embeds de YouTube
 6. [ ] Crear formulario de contacto
