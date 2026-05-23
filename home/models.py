@@ -2,12 +2,13 @@ from django.db import models
 
 from wagtail.models import Page
 from wagtail.fields import RichTextField, StreamField
-from wagtail.admin.panels import FieldPanel, MultiFieldPanel
+from wagtail.admin.panels import FieldPanel, MultiFieldPanel, InlinePanel
 from wagtail.blocks import CharBlock, RichTextBlock, TextBlock, BlockQuoteBlock
 from wagtail.images.blocks import ImageChooserBlock
 from wagtail.embeds.blocks import EmbedBlock
 from wagtail.snippets.models import register_snippet
 from wagtail.search import index
+from wagtail.contrib.forms.models import AbstractEmailForm, AbstractFormField
 
 from modelcluster.fields import ParentalKey
 from modelcluster.contrib.taggit import ClusterTaggableManager
@@ -211,3 +212,44 @@ class BlogPage(Page):
     class Meta:
         verbose_name = "Post del Blog"
         verbose_name_plural = "Posts del Blog"
+
+
+# =============================================================================
+# Contact Form
+# =============================================================================
+
+class FormField(AbstractFormField):
+    """Campo individual del formulario de contacto."""
+    page = ParentalKey(
+        'ContactPage',
+        on_delete=models.CASCADE,
+        related_name='form_fields'
+    )
+
+
+class ContactPage(AbstractEmailForm):
+    """Página de contacto con formulario gestionado desde el admin de Wagtail."""
+    intro = RichTextField(blank=True, verbose_name="Introducción")
+    thank_you_text = RichTextField(blank=True, verbose_name="Texto de agradecimiento")
+
+    content_panels = AbstractEmailForm.content_panels + [
+        FieldPanel('intro'),
+        InlinePanel('form_fields', label="Campos del formulario"),
+        FieldPanel('thank_you_text'),
+        MultiFieldPanel([
+            FieldPanel('to_address'),
+            FieldPanel('from_address'),
+            FieldPanel('subject'),
+        ], heading="Configuración de Email"),
+    ]
+
+    parent_page_types = ['home.HomePage']
+    subpage_types = []
+
+    def serve(self, request, *args, **kwargs):
+        if request.method == 'POST' and request.POST.get('website'):
+            return self.render_landing_page(request, None, *args, **kwargs)
+        return super().serve(request, *args, **kwargs)
+
+    class Meta:
+        verbose_name = "Página de Contacto"
