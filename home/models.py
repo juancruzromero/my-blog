@@ -9,6 +9,7 @@ from wagtail.embeds.blocks import EmbedBlock
 from wagtail.snippets.models import register_snippet
 from wagtail.search import index
 from wagtail.contrib.forms.models import AbstractEmailForm, AbstractFormField
+from wagtail.contrib.settings.models import BaseSiteSetting, register_setting
 
 from modelcluster.fields import ParentalKey
 from modelcluster.contrib.taggit import ClusterTaggableManager
@@ -215,6 +216,30 @@ class BlogPage(Page):
     class Meta:
         verbose_name = "Post del Blog"
         verbose_name_plural = "Posts del Blog"
+
+
+# =============================================================================
+# Site Settings
+# =============================================================================
+
+@register_setting
+class SocialMediaSettings(BaseSiteSetting):
+    twitter = models.URLField(blank=True, verbose_name="Twitter / X")
+    instagram = models.URLField(blank=True, verbose_name="Instagram")
+    youtube = models.URLField(blank=True, verbose_name="YouTube")
+    linkedin = models.URLField(blank=True, verbose_name="LinkedIn")
+    github = models.URLField(blank=True, verbose_name="GitHub")
+
+    panels = [
+        FieldPanel('twitter'),
+        FieldPanel('instagram'),
+        FieldPanel('youtube'),
+        FieldPanel('linkedin'),
+        FieldPanel('github'),
+    ]
+
+    class Meta:
+        verbose_name = "Redes Sociales"
 
 
 # =============================================================================
