@@ -1,46 +1,31 @@
-from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from django.core.paginator import Paginator
 from django.template.response import TemplateResponse
 
-from wagtail.models import Page
-
-# To enable logging of search queries for use with the "Promoted search results" module
-# <https://docs.wagtail.org/en/stable/reference/contrib/searchpromotions.html>
-# uncomment the following line and the lines indicated in the search function
-# (after adding wagtail.contrib.search_promotions to INSTALLED_APPS):
-
-# from wagtail.contrib.search_promotions.models import Query
+from home.models import BlogCategory, BlogPage
 
 
 def search(request):
-    search_query = request.GET.get("query", None)
-    page = request.GET.get("page", 1)
+    search_query = request.GET.get("query", "")
+    selected_category = request.GET.get("category", "")
 
-    # Search
     if search_query:
-        search_results = Page.objects.live().search(search_query)
-
-        # To log this query for use with the "Promoted search results" module:
-
-        # query = Query.get(search_query)
-        # query.add_hit()
-
+        qs = BlogPage.objects.live()
+        if selected_category:
+            qs = qs.filter(category__slug=selected_category)
+        search_results = qs.search(search_query)
     else:
-        search_results = Page.objects.none()
+        search_results = BlogPage.objects.none()
 
-    # Pagination
     paginator = Paginator(search_results, 10)
-    try:
-        search_results = paginator.page(page)
-    except PageNotAnInteger:
-        search_results = paginator.page(1)
-    except EmptyPage:
-        search_results = paginator.page(paginator.num_pages)
+    page_obj = paginator.get_page(request.GET.get("page"))
 
     return TemplateResponse(
         request,
         "search/search.html",
         {
             "search_query": search_query,
-            "search_results": search_results,
+            "search_results": page_obj,
+            "categories": BlogCategory.objects.all(),
+            "selected_category": selected_category,
         },
     )

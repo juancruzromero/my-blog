@@ -201,6 +201,9 @@ class BlogPage(Page):
         index.SearchField('body'),
         index.FilterField('category'),
         index.FilterField('date'),
+        index.RelatedFields('tags', [
+            index.SearchField('name'),
+        ]),
     ]
 
     # Solo puede estar bajo BlogIndexPage
