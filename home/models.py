@@ -2,7 +2,7 @@ from django.db import models
 
 from wagtail.models import Page
 from wagtail.fields import RichTextField, StreamField
-from wagtail.admin.panels import FieldPanel, MultiFieldPanel, InlinePanel
+from wagtail.admin.panels import FieldPanel, MultiFieldPanel, InlinePanel, TabbedInterface, ObjectList
 from wagtail.blocks import CharBlock, RichTextBlock, TextBlock, BlockQuoteBlock
 from wagtail.images.blocks import ImageChooserBlock
 from wagtail.embeds.blocks import EmbedBlock
@@ -207,10 +207,16 @@ class BlogPage(Page):
         ]),
     ]
 
-    # Solo puede estar bajo BlogIndexPage
-    parent_page_types = ['home.BlogIndexPage']
+    edit_handler = TabbedInterface([
+        ObjectList(content_panels, heading='Contenido'),
+        ObjectList([
+            FieldPanel('seo_title'),
+            FieldPanel('search_description'),
+        ], heading='SEO'),
+        ObjectList(Page.settings_panels, heading='Configuración'),
+    ])
 
-    # No puede tener páginas hijas
+    parent_page_types = ['home.BlogIndexPage']
     subpage_types = []
 
     class Meta:

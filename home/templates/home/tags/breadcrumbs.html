@@ -1,0 +1,27 @@
+{% load wagtailcore_tags %}
+
+{% if ancestors %}
+<nav aria-label="Breadcrumb" class="text-sm text-gray-500 mb-6">
+    <ol class="flex items-center flex-wrap gap-1"
+        itemscope itemtype="https://schema.org/BreadcrumbList">
+        {% for ancestor in ancestors %}
+            <li itemprop="itemListElement" itemscope
+                itemtype="https://schema.org/ListItem"
+                class="flex items-center gap-1">
+                {% if not forloop.last %}
+                    <a href="{% pageurl ancestor %}" itemprop="item"
+                       class="hover:text-blue-600 transition-colors">
+                        <span itemprop="name">{{ ancestor.title }}</span>
+                    </a>
+                    <span class="text-gray-300">/</span>
+                {% else %}
+                    <span itemprop="name" class="text-gray-800 font-medium">
+                        {{ ancestor.title }}
+                    </span>
+                {% endif %}
+                <meta itemprop="position" content="{{ forloop.counter }}" />
+            </li>
+        {% endfor %}
+    </ol>
+</nav>
+{% endif %}

@@ -1,5 +1,51 @@
 {% extends "base.html" %}
-{% load wagtailcore_tags wagtailimages_tags %}
+{% load static wagtailcore_tags wagtailimages_tags blog_tags %}
+
+{% block meta_description %}{{ page.excerpt }}{% endblock %}
+
+{% block og_type %}article{% endblock %}
+{% block og_title %}{{ page.seo_title|default:page.title }}{% endblock %}
+{% block og_description %}{{ page.excerpt }}{% endblock %}
+{% block og_image %}
+    {% if page.featured_image %}
+        {% image page.featured_image fill-1200x630 as og_img %}
+        <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{{ og_img.url }}">
+    {% endif %}
+{% endblock %}
+
+{% block twitter_title %}{{ page.seo_title|default:page.title }}{% endblock %}
+{% block twitter_description %}{{ page.excerpt }}{% endblock %}
+{% block twitter_image %}
+    {% if page.featured_image %}
+        {% image page.featured_image fill-1200x630 as tw_img %}
+        <meta name="twitter:image" content="{{ request.scheme }}://{{ request.get_host }}{{ tw_img.url }}">
+    {% endif %}
+{% endblock %}
+
+{% block extra_head %}
+<meta property="article:published_time" content="{{ page.date|date:'c' }}">
+{% if page.category %}<meta property="article:section" content="{{ page.category.name }}">{% endif %}
+{% for tag in page.tags.all %}<meta property="article:tag" content="{{ tag.name }}">{% endfor %}
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "{{ page.title|escapejs }}",
+    "description": "{{ page.excerpt|escapejs }}",
+    {% if page.featured_image %}{% image page.featured_image fill-1200x630 as ld_img %}"image": "{{ request.scheme }}://{{ request.get_host }}{{ ld_img.url }}",{% endif %}
+    "datePublished": "{{ page.date|date:'c' }}",
+    "dateModified": "{{ page.last_published_at|date:'c' }}",
+    "author": {"@type": "Person", "name": "Juan Cruz Romero"},
+    "publisher": {
+        "@type": "Organization",
+        "name": "Juancito escribe boludeces",
+        "logo": {"@type": "ImageObject", "url": "{{ request.scheme }}://{{ request.get_host }}{% static 'images/logo.png' %}"}
+    },
+    "mainEntityOfPage": {"@type": "WebPage", "@id": "{{ request.build_absolute_uri }}"}
+}
+</script>
+{% endblock %}
 
 {% block content %}
 <article class="max-w-4xl mx-auto">
