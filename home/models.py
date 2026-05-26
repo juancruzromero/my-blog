@@ -72,6 +72,13 @@ class HomePage(Page):
         FieldPanel('body'),
     ]
 
+    def get_context(self, request):
+        context = super().get_context(request)
+        context['recent_posts'] = (
+            BlogPage.objects.live().order_by('-date')[:3]
+        )
+        return context
+
 
 class BlogIndexPage(Page):
     """Página índice que lista todos los posts del blog."""
