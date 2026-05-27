@@ -32,6 +32,23 @@
     </a>
 </section>
 
+<!-- Últimos posts -->
+{% if recent_posts %}
+<section class="py-12">
+    <div class="flex items-center justify-between mb-8">
+        <h2 class="text-2xl font-bold text-gray-900">Últimas publicaciones</h2>
+        <a href="/blog/" class="text-primary hover:text-blue-600 font-medium transition-colors">
+            Ver todas &rarr;
+        </a>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {% for post in recent_posts %}
+            {% include "components/post_card.html" with post=post %}
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+
 <!-- Categorias destacadas -->
 <section class="py-12">
     <h2 class="text-2xl font-bold text-gray-900 mb-8 text-center">Explora por categoria</h2>
@@ -85,23 +102,6 @@
         </a>
     </div>
 </section>
-
-<!-- Últimos posts -->
-{% if recent_posts %}
-<section class="py-12">
-    <div class="flex items-center justify-between mb-8">
-        <h2 class="text-2xl font-bold text-gray-900">Últimas entradas</h2>
-        <a href="/blog/" class="text-primary hover:text-blue-600 font-medium transition-colors">
-            Ver todas &rarr;
-        </a>
-    </div>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {% for post in recent_posts %}
-            {% include "components/post_card.html" with post=post %}
-        {% endfor %}
-    </div>
-</section>
-{% endif %}
 
 <!-- Body content si existe -->
 {% if page.body %}
